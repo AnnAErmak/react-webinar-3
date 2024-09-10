@@ -1,5 +1,5 @@
 const propNames = new Set(['id', 'className', 'textContent', 'onclick']);
-
+let id = 1;
 /**
  * Создание элемента со свойствами и вложенными элементами
  * @param name {String} Название HTML тега
@@ -34,4 +34,8 @@ export function getWordForCount(count) {
   } else {
     return 'раз';
   }
-}
+};
+
+export const generateId = () =>{
+    return id++;
+};
