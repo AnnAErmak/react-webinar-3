@@ -1,5 +1,5 @@
 const propNames = new Set(['id', 'className', 'textContent', 'onclick']);
-let id = 1;
+
 /**
  * Создание элемента со свойствами и вложенными элементами
  * @param name {String} Название HTML тега
@@ -36,6 +36,11 @@ export function getWordForCount(count) {
   }
 };
 
-export const generateId = () =>{
-    return id++;
+const generator = (value) =>{
+  let newId = value;
+    return function generateId(){
+      return ++newId;
+    }
 };
+
+export const generateId = generator(7) //Передаем длину массива или самый большой id в списке

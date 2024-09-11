@@ -11,6 +11,11 @@ import {getWordForCount} from "./utils.js";
 function App({ store }) {
   const list = store.getState().list;
 
+  const deleteItemHandler = (e, code) => {
+    e.stopPropagation();
+    store.deleteItem(code)
+  }
+
   return (
     <div className="App">
       <div className="App-head">
@@ -32,7 +37,7 @@ function App({ store }) {
                   {item.title} {item.countSelected && ` | Выделяли ${item.countSelected} ${getWordForCount(item.countSelected)}`}
                 </div>
                 <div className="Item-actions">
-                  <button onClick={() => store.deleteItem(item.code)}>Удалить</button>
+                  <button onClick={(e) => deleteItemHandler(e, item.code)}>Удалить</button>
                 </div>
               </div>
             </div>
