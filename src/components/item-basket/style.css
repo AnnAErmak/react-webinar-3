@@ -1,0 +1,39 @@
+.ItemBasket {
+  display: flex;
+  justify-content: flex-start;
+  transition: background-color 1s;
+  padding-left: 10px;
+}
+
+.ItemBasket-code {
+  font-size: 16px;
+  padding: 20px 10px 20px 20px;
+}
+
+.ItemBasket-title {
+  font-size: 16px;
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.ItemBasket-price {
+  font-size: 18px;
+  color: #404040;
+  padding: 20px 62px 20px 0;
+}
+
+.ItemBasket-amount {
+  font-size: 18px;
+  color: #404040;
+  padding: 20px 24px 20px 0;
+}
+
+.ItemBasket-action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 20px 20px 0px;
+}
+
+.ItemBasket-action button{
+  font-size: 13px;
+}
