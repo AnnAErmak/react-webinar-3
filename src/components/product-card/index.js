@@ -1,22 +1,39 @@
 import React from "react";
-import { cn as bem } from '@bem-react/classname';
+import {cn as bem} from '@bem-react/classname';
 import './style.css'
 import PropTypes from "prop-types";
 import {numberFormat} from "../../utils";
+import useSelector from "../../store/use-selector";
+import Loader from "../loader/loader";
 
 
-function ProductCard({productInfo, onAddBasket=()=>{}}){
+function ProductCard({
+                       productInfo, onAddBasket = () => {
+  }
+                     }) {
   const cn = bem('ProductCard')
 
-  return(
+  const select = useSelector(state => ({
+    isLoading: state.product.isLoading,
+  }));
+
+  return (
     <div className={cn()}>
-      <div className={cn('line')}>{productInfo.description}</div>
-      <div className={cn('line')}>
-        Страна производитель: <span>{productInfo.madeIn?.title} ({productInfo.madeIn?.code})</span></div>
-      <div className={cn('line')}>Категория: <span>{productInfo.category?.title}</span></div>
-      <div className={cn('line')}>Год выпуска: <span>{productInfo.edition}</span></div>
-      <div className={cn('price')}>Цена: {numberFormat(productInfo.price)} ₽</div>
-      <button className={cn('btn')} onClick={() =>{onAddBasket(productInfo._id)}}>Добавить</button>
+      {select.isLoading && <Loader/>}
+      {!select.isLoading && (
+        <>
+          <div className={cn('line')}>{productInfo.description}</div>
+          <div className={cn('line')}>
+            Страна производитель: <span>{productInfo.madeIn?.title} ({productInfo.madeIn?.code})</span></div>
+          <div className={cn('line')}>Категория: <span>{productInfo.category?.title}</span></div>
+          <div className={cn('line')}>Год выпуска: <span>{productInfo.edition}</span></div>
+          <div className={cn('price')}>Цена: {numberFormat(productInfo.price)} ₽</div>
+          <button className={cn('btn')} onClick={() => {
+            onAddBasket(productInfo._id)
+          }}>Добавить
+          </button>
+        </>
+      )}
     </div>
   )
 }
@@ -29,11 +46,11 @@ ProductCard.propTypes = {
       title: PropTypes.string,
       code: PropTypes.string,
     }),
-    category:PropTypes.shape({
+    category: PropTypes.shape({
       title: PropTypes.string,
     }),
-    edition:PropTypes.number,
-    price:PropTypes.number,
+    edition: PropTypes.number,
+    price: PropTypes.number,
   }).isRequired,
 };
 
