@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import Item from '../../components/item';
 import PageLayout from '../../components/page-layout';
 import Head from '../../components/head';
@@ -8,13 +8,15 @@ import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import Pagination from "../../components/pagination";
 import {LIMIT} from '../../api';
+import {useParams, useNavigate } from "react-router-dom";
 
 function Main() {
   const store = useStore();
 
-  useEffect(() => {
-    store.actions.catalog.load();
-  }, []);
+  const {page} = useParams();
+  const navigate = useNavigate ()
+
+  const [currentPage, setCurrentPage] = useState(parseInt(page) || 1);
 
   const select = useSelector(state => ({
     list: state.catalog.list,
@@ -24,12 +26,21 @@ function Main() {
     activePage: state.catalog.activePage,
   }));
 
+  useEffect(() => {
+    store.actions.catalog.load(currentPage);
+    navigate(`/page/${currentPage}`);
+
+  }, [currentPage, page]);
+
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Открытие модалки корзины
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
-    setActivePage: useCallback((page) => store.actions.catalog.load(page), [store]),
+    setActivePage: useCallback((page) => {
+      store.actions.catalog.load(page)
+      setCurrentPage(page)
+    }, [store]),
   };
 
   const renders = {
