@@ -2,6 +2,7 @@ import React from "react";
 import { cn as bem } from '@bem-react/classname';
 import './style.css'
 import PropTypes from "prop-types";
+import {numberFormat} from "../../utils";
 
 
 function ProductCard({productInfo, onAddBasket=()=>{}}){
@@ -14,7 +15,7 @@ function ProductCard({productInfo, onAddBasket=()=>{}}){
         Страна производитель: <span>{productInfo.madeIn?.title} ({productInfo.madeIn?.code})</span></div>
       <div className={cn('line')}>Категория: <span>{productInfo.category?.title}</span></div>
       <div className={cn('line')}>Год выпуска: <span>{productInfo.edition}</span></div>
-      <div className={cn('price')}>Цена: {productInfo.price}</div>
+      <div className={cn('price')}>Цена: {numberFormat(productInfo.price)} ₽</div>
       <button className={cn('btn')} onClick={() =>{onAddBasket(productInfo._id)}}>Добавить</button>
     </div>
   )
