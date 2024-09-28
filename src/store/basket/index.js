@@ -14,6 +14,7 @@ class Basket extends StoreModule {
    * @param _id Код товара
    */
   async addToBasket(_id) {
+
     let sum = 0;
     // Ищем товар в корзине, чтобы увеличить его количество
     let exist = false;
@@ -32,7 +33,8 @@ class Basket extends StoreModule {
       // @todo В реальном приложении будет запрос к АПИ вместо поиска по состоянию.
       // const item = this.store.getState().catalog.list.find(item => item._id === _id);
       const res = await fetch(`/api/v1/articles/${_id}`);
-      const item = await res.json();
+      const json = await res.json();
+      const item = json.result;
 
       list.push({ ...item, amount: 1 }); // list уже новый, в него можно пушить.
       // Добавляем к сумме.
