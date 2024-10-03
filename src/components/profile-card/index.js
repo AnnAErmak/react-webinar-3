@@ -1,9 +1,9 @@
-import { memo } from 'react';
+import {memo} from 'react';
 import PropTypes from 'prop-types';
-import { cn as bem } from '@bem-react/classname';
+import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
-function ProfileCard({ user, t }) {
+function ProfileCard({user, t}) {
   const cn = bem('ProfileCard');
 
   return (
@@ -32,11 +32,13 @@ function ProfileCard({ user, t }) {
 }
 
 ProfileCard.propTypes = {
-  profile: PropTypes.shape({
-    name: PropTypes.string,
-    phone: PropTypes.string,
+  user: PropTypes.shape({
+    profile: PropTypes.shape({
+      name: PropTypes.string,
+      phone: PropTypes.string,
+    }),
+    email: PropTypes.string,
   }).isRequired,
-  email: PropTypes.string,
   t: PropTypes.func,
 };
 
