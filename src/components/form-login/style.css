@@ -1,0 +1,19 @@
+.FormLogin{
+  display: flex;
+  flex-direction: column;
+  max-width: 203px;
+  padding: 0 15px;
+}
+
+.FormLogin-input{
+  margin-bottom: 20px;
+}
+.FormLogin_errors{
+  margin-bottom: 20px;
+  color: #f00;
+  font-size: 16px;
+  padding: 0;
+}
+.FormLogin-btn{
+  max-width: 53px;
+}
