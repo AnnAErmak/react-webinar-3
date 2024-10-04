@@ -11,10 +11,6 @@ class AuthState extends StoreModule {
     };
   }
 
-  /**
-   * Установка кода языка (локали)
-   * @param lang
-   */
   async logIn(data) {
     this.setState(this.initState());
 
