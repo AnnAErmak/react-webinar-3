@@ -10,17 +10,15 @@ function CommentForm({existsSession, t}) {
       {existsSession
       ?(
           <form className={cn()}>
-            <h3></h3>
-            <textarea className={cn('textarea')} rows="5"/>
-            <div className={cn('actions')}>
-              <button>Отправить</button>
-            </div>
+            <h3 className={cn('title')}>Новый комментарий</h3>
+            <textarea className={cn('textarea')} placeholder={'Текст'}/>
+            <button className={cn('btn')}>Отправить</button>
           </form>
         )
         : (
-          <div>
-            <Link to={'/login'}>Войдите</Link>,
-            чтобы иметь возможнось комментировать
+          <div className={cn('login')}>
+            <Link className={cn('link')} to={'/login'}>Войдите </Link>,
+            <span>&nbsp;чтобы иметь возможнось комментировать</span>
           </div>
         )
       }

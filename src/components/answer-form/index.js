@@ -13,19 +13,19 @@ function AnswerForm({existsSession, t}) {
       {existsSession
       ?(
           <form className={cn()}>
-            <h3>Новый ответ</h3>
-            <textarea/>
+            <h3 className={cn('title')}>Новый ответ</h3>
+            <textarea className={cn('textarea')} placeholder={`Мой ответ для `}/>
             <div className={cn('actions')}>
-              <button>Отправить</button>
-              <button>Отмена</button>
+              <button className={cn('btn')}>Отправить</button>
+              <button className={cn('btn')}>Отмена</button>
             </div>
           </form>
         )
         : (
-          <div>
-            <Link to={'/login'}>Войдите</Link>,
-            чтобы иметь возможнось комментировать
-            <button onClick={() => dispatch(formsActions.open('comment'))}>Отмена</button>
+          <div className={cn('login')}>
+            <Link className={cn('link')} to={'/login'}>Войдите</Link>
+            <span>, чтобы иметь возможнось комментировать. </span>
+            <button className={cn('cancel')} onClick={() => dispatch(formsActions.open('comment'))}>Отмена</button>
           </div>
         )
       }

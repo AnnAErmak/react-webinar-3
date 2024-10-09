@@ -24,3 +24,11 @@
   font-size: 12px;
   color: #0087e9;
 }
+.ItemComment-btn{
+  font-size: 12px;
+  color: #0087e9;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
