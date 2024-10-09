@@ -1,3 +1,5 @@
+import formsActions from "../forms/actions";
+
 export default {
   /**
    * Загрузка комментариев
@@ -13,7 +15,7 @@ export default {
         const res = await services.api.request({
           url: `/api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count&limit=*&search[parent]=${id}`,
         });
-        // Товар загружен успешно
+        // комментарии загружены успешно
         dispatch({ type: 'comments/load-success', payload: { comments: res.data.result.items, count:  res.data.result.count} });
       } catch (e) {
         //Ошибка загрузки
@@ -22,7 +24,27 @@ export default {
     };
   },
 
-  setActiveIdComment: (id) => {
-    return { type: 'comments/setActiveIdComment', payload: id}
+  send: data => {
+    return async (dispatch, getState, services) => {
+      // Сброс текущих комментариев и установка признака ожидания загрузки
+      dispatch({type: 'comments/send-start'});
+
+      try {
+        const res = await services.api.request({
+          url: `/api/v1/comments?fields=_id,text,dateCreate,author(profile(name)),parent(_id,_type)`,
+          method: "POST",
+          body: JSON.stringify(data)
+        });
+        // комментарии добавлен успешно
+        dispatch({ type: 'comments/send-success', payload: res.data.result});
+        dispatch(formsActions.open('comment'))
+      } catch (e) {
+        //Ошибка загрузки
+        dispatch({ type: 'comments/send-error' });
+      }
+    };
+  },
+  setActiveIdComment: (id, currentId, userName) => {
+    return { type: 'comments/setActiveIdComment', payload: {id, currentId, userName}}
   }
 };

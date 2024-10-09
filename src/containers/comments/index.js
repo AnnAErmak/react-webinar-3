@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect, useRef} from 'react';
 import {useDispatch, useSelector as useSelectorRedux} from "react-redux";
 import shallowequal from "shallowequal";
 import useTranslate from "../../hooks/use-translate";
@@ -11,17 +11,22 @@ import CommentForm from "../../components/comment-form";
 import formsActions from "../../store-redux/forms/actions";
 import commentsActions from "../../store-redux/comments/actions";
 import RootComments from "../../components/root-comments";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 function Comments() {
   const {t} = useTranslate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const selectRedux = useSelectorRedux(state => ({
     comments: state.comments.comments,
     count: state.comments.count,
     articleId: state.article.data._id,
     activeRootId: state.comments.activeIdComment,
+    currentId: state.comments.currentId,
+    userAnswer: state.comments.userName,
     form: state.forms.name,
   }), shallowequal);
 
@@ -33,27 +38,59 @@ function Comments() {
   // const commentsList = treeToList(commentsTree, (item, level) => ({...item, level}));
 
   const callbacks = {
-    hiddenAnswerForm: useCallback((name, activeId)=>{
-      console.log('Comments hiddenAnswerForm',activeId)
-      dispatch(commentsActions.setActiveIdComment(activeId))
+    openAnswerForm: useCallback((name, activeId, currentId, userName)=>{
+      // console.log('Comments openAnswerForm', name, activeId)
+      dispatch(commentsActions.setActiveIdComment(activeId, currentId, userName))
       dispatch(formsActions.open(name))
+    }, []),
+    onHideAnswerForm: useCallback(()=>{
+      dispatch(formsActions.open('comment'))
+    }, []),
+
+    onSignIn: useCallback(() => {
+      navigate('/login', { state: { back: location.pathname } });
+    }, [location.pathname]),
+
+    onComment: useCallback((text, id=null)=>{
+      const body = {
+        text,
+        parent: {
+          _id: id || selectRedux.articleId,
+          _type: id ? 'comment' : 'article',
+        }
+      }
+      dispatch(commentsActions.send(body))
     }, []),
   }
 
-  console.log('Comments commentsRoots', commentsRoots)
+
+
+  // console.log('Comments commentsRoots', commentsRoots)
   return (
     <CommentsLayout t={t} countComments={selectRedux.count}>
       {commentsRoots[0].children.map(root => (
         <RootComments
           key={root._id}
           rootId={selectRedux.activeRootId}
+          currentId={selectRedux.currentId}
           root={root}
           existsSession={select.exists}
-          hiddenAnswerForm={callbacks.hiddenAnswerForm}
+          openAnswerForm={callbacks.openAnswerForm}
+          onHideAnswerForm={callbacks.onHideAnswerForm}
           formName={selectRedux.form}
+          onSignIn={callbacks.onSignIn}
+          onComment={callbacks.onComment}
+          userAnswer={selectRedux.userAnswer}
+          t={t}
         />))}
-      {/*<AllComments activeId={selectRedux.activeId} hiddenAnswerForm = {callbacks.hiddenAnswerForm} formName={selectRedux.form} existsSession={select.exists} comments={commentsList}/>*/}
-      {selectRedux.form === 'comment' && <CommentForm existsSession={select.exists} t={t}/>}
+      {selectRedux.form === 'comment' &&
+        <CommentForm
+          existsSession={select.exists}
+          onSignIn={callbacks.onSignIn}
+          onComment={callbacks.onComment}
+          t={t}
+        />
+      }
     </CommentsLayout>
   )
 }

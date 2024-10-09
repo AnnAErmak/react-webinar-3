@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
 }
+
 .ItemComment-info{
   display: flex;
   gap: 10px;

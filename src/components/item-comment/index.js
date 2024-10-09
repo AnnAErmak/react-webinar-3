@@ -1,17 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './style.css';
 import {cn as bem} from '@bem-react/classname';
-import {Link} from "react-router-dom";
-import CommentForm from "../comment-form";
-import AnswerForm from "../answer-form";
 import {formatDate} from "../../utils/date-format";
 
-function ItemComment({commentInfo, rootId, hiddenAnswerForm}) {
+function ItemComment({commentInfo, rootId, openAnswerForm, t}) {
 
   const cn = bem('ItemComment');
   const gap = (commentInfo.level + 1) * 30
 
-  // console.log('ItemComment', commentInfo)
   return (
     <>
         <div className={cn()}
@@ -23,9 +19,12 @@ function ItemComment({commentInfo, rootId, hiddenAnswerForm}) {
           </div>
           <div className={cn('text')}>{commentInfo?.text}</div>
           <div className={cn('answer')}>
-            <button className={cn('btn')} onClick={() => hiddenAnswerForm('answer', rootId)}>Ответить</button>
+            <button className={cn('btn')}
+                    onClick={() => openAnswerForm('answer', rootId, commentInfo._id, commentInfo?.author?.profile?.name)}
+            >
+              {t('comments.answer')}
+            </button>
           </div>
-          {/*{formName === 'answer' && activeId === commentInfo._id && <AnswerForm existsSession={existsSession} />}*/}
         </div>
     </>
   )

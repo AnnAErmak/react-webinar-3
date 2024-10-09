@@ -35,6 +35,9 @@
 .AnswerForm-link{
   color: #0087e9;
   cursor: pointer;
+  background: transparent;
+  text-decoration: underline;
+  border: none;
 }
 .AnswerForm-cancel{
   color: #666;
