@@ -1,9 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState, memo} from "react";
 import './style.css';
 import {cn as bem} from '@bem-react/classname';
-import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import formsActions from '../../store-redux/forms/actions';
+import PropTypes from "prop-types";
 
 function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onComment, currentId, t}) {
   const cn = bem('AnswerForm');
@@ -23,6 +21,7 @@ function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onCo
       answerRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [answerRef])
+
   return (
     <>
       {existsSession
@@ -44,7 +43,7 @@ function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onCo
         : (
           <div ref={answerRef} className={cn('login')}>
             <button className={cn('link')} onClick={onSignIn}>{t('comments.login')}</button>
-            <span>,{t('comments.toAnswer')}. </span>
+            <span>,&nbsp;{t('comments.toAnswer')}. </span>
             <button className={cn('cancel')} onClick={onHideAnswerForm}>{t('comments.close')}</button>
           </div>
         )
@@ -54,4 +53,13 @@ function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onCo
   )
 }
 
-export default AnswerForm
+AnswerForm.propTypes = {
+  userAnswer: PropTypes.string,
+  existsSession: PropTypes.bool,
+  onSignIn: PropTypes.func,
+  onHideAnswerForm: PropTypes.func,
+  onComment: PropTypes.func,
+  currentId: PropTypes.string,
+  t: PropTypes.func
+}
+export default memo(AnswerForm)

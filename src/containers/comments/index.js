@@ -1,11 +1,9 @@
-import React, {memo, useCallback, useEffect, useRef} from 'react';
+import React, {memo, useCallback} from 'react';
 import {useDispatch, useSelector as useSelectorRedux} from "react-redux";
 import shallowequal from "shallowequal";
 import useTranslate from "../../hooks/use-translate";
 import CommentsLayout from "../../components/comments-layout";
-import AllComments from "../../components/root-comments";
 import listToTree from "../../utils/list-to-tree";
-import treeToList from "../../utils/tree-to-list";
 import useSelector from "../../hooks/use-selector";
 import CommentForm from "../../components/comment-form";
 import formsActions from "../../store-redux/forms/actions";
@@ -35,14 +33,13 @@ function Comments() {
   }))
 
   const commentsRoots = listToTree([{_id: selectRedux.articleId, parent: null}, ...selectRedux.comments])
-  // const commentsList = treeToList(commentsTree, (item, level) => ({...item, level}));
 
   const callbacks = {
     openAnswerForm: useCallback((name, activeId, currentId, userName)=>{
-      // console.log('Comments openAnswerForm', name, activeId)
       dispatch(commentsActions.setActiveIdComment(activeId, currentId, userName))
       dispatch(formsActions.open(name))
     }, []),
+
     onHideAnswerForm: useCallback(()=>{
       dispatch(formsActions.open('comment'))
     }, []),
@@ -63,9 +60,6 @@ function Comments() {
     }, []),
   }
 
-
-
-  // console.log('Comments commentsRoots', commentsRoots)
   return (
     <CommentsLayout t={t} countComments={selectRedux.count}>
       {commentsRoots[0].children.map(root => (

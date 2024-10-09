@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {memo} from 'react';
 import './style.css';
 import {cn as bem} from '@bem-react/classname';
 import {formatDate} from "../../utils/date-format";
+import PropTypes from "prop-types";
 
 function ItemComment({commentInfo, rootId, openAnswerForm, t}) {
 
@@ -30,4 +31,16 @@ function ItemComment({commentInfo, rootId, openAnswerForm, t}) {
   )
 }
 
-export default ItemComment
+ItemComment.propTypes = {
+  commentInfo: PropTypes.shape({
+    author: PropTypes.shape({profile:PropTypes.shape({name: PropTypes.string})}),
+    dateCreate: PropTypes.string,
+    text: PropTypes.string,
+    _id: PropTypes.string,
+  }),
+  rootId: PropTypes.string,
+  openAnswerForm: PropTypes.func,
+  t: PropTypes.func
+}
+
+export default memo(ItemComment)

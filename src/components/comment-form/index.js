@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, memo} from "react";
 import './style.css';
 import {cn as bem} from '@bem-react/classname';
-import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 
 function CommentForm({existsSession, onSignIn, onComment, t}) {
   const cn = bem('CommentForm');
@@ -15,6 +15,7 @@ function CommentForm({existsSession, onSignIn, onComment, t}) {
     e.preventDefault();
     onComment(text)
   }
+
   return (
     <>
       {existsSession
@@ -42,4 +43,11 @@ function CommentForm({existsSession, onSignIn, onComment, t}) {
   )
 }
 
-export default CommentForm
+CommentForm.propTypes = {
+  existsSession: PropTypes.bool,
+  onSignIn: PropTypes.func,
+  onComment: PropTypes.func,
+  t: PropTypes.func
+}
+
+export default memo(CommentForm)

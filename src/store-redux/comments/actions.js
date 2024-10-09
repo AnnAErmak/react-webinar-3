@@ -19,7 +19,7 @@ export default {
         dispatch({ type: 'comments/load-success', payload: { comments: res.data.result.items, count:  res.data.result.count} });
       } catch (e) {
         //Ошибка загрузки
-        dispatch({ type: 'comments/load-error' });
+        console.log(e)
       }
     };
   },
@@ -40,11 +40,13 @@ export default {
         dispatch(formsActions.open('comment'))
       } catch (e) {
         //Ошибка загрузки
-        dispatch({ type: 'comments/send-error' });
+        console.log(e)
       }
     };
   },
+
   setActiveIdComment: (id, currentId, userName) => {
     return { type: 'comments/setActiveIdComment', payload: {id, currentId, userName}}
   }
+
 };
