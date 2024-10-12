@@ -3,13 +3,15 @@ import './style.css';
 import {cn as bem} from '@bem-react/classname';
 import PropTypes from "prop-types";
 
-function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onComment, currentId, t}) {
+
+function AnswerForm({ existsSession, onSignIn, onHideAnswerForm, onComment, currentId, t}) {
   const cn = bem('AnswerForm');
   const [text, setText] = useState('')
   const answerRef = useRef()
 
   const handelChange = (value) => {
-    setText(value)
+    setText(value);
+
   }
   const handelSubmit = (e) =>{
     e.preventDefault();
@@ -18,7 +20,10 @@ function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onCo
 
   useEffect(()=>{
     if (answerRef.current) {
-      answerRef.current.scrollIntoView({ behavior: 'smooth' });
+      const offsetY = answerRef.current?.getBoundingClientRect().y + window.scrollY;
+      if (offsetY) {
+        window.scrollTo({top: offsetY - window.innerHeight / 2, behavior: 'instant'});
+      }
     }
   }, [answerRef])
 
@@ -30,7 +35,7 @@ function AnswerForm({userAnswer, existsSession, onSignIn, onHideAnswerForm, onCo
             <h3 className={cn('title')}>{t('comments.newAnswer')}</h3>
             <textarea
               className={cn('textarea')}
-              placeholder={`Мой ответ для ${userAnswer}`}
+              rows="5"
               value={text}
               onChange={(e) => handelChange(e.target.value)}
             />
